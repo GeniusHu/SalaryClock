@@ -4,26 +4,24 @@ import Cookies from 'js-cookie';
 const TOKEN_KEY = 'earnings_tracker_token';
 const USER_INFO_KEY = 'earnings_tracker_user';
 
+// 默认用户信息
+const DEFAULT_USER_INFO = {
+  monthlySalary: 10000,  // 默认月薪10000
+  workStartTime: '09:00',
+  workEndTime: '18:00',
+  joinDate: '2024-01-01',  // 默认今年1月1日
+  workDays: [1, 2, 3, 4, 5],  // 周一到周五
+  hideAllMoney: false
+};
+
 // 检查并初始化用户信息
 export const initUserInfo = () => {
-  if (!getToken()) {
-    // 设置默认token
-    setToken('default-token');
-    
-    // 设置默认用户信息
-    const defaultUserInfo = {
-      joinDate: '2024-01-01',
-      monthlySalary: 16666,
-      workStartTime: '09:00',
-      workEndTime: '18:00',
-      workDays: [1, 2, 3, 4, 5], // 1-5 代表周一到周五
-      breakTime: 60, // 午休时间(分钟)
-      hideAllMoney: false, // 添加全局金额显示控制
-    };
-    setUserInfo(defaultUserInfo);
-    return defaultUserInfo;
+  const userInfo = getUserInfo();
+  if (!userInfo) {
+    setUserInfo(DEFAULT_USER_INFO);
+    return DEFAULT_USER_INFO;
   }
-  return getUserInfo();
+  return userInfo;
 };
 
 // 设置登录token
@@ -44,11 +42,21 @@ export const removeToken = () => {
 
 // 设置用户信息
 export const setUserInfo = (userInfo) => {
-  Cookies.set(USER_INFO_KEY, JSON.stringify(userInfo), { expires: 365 });
+  try {
+    localStorage.setItem('earnings_tracker_user', JSON.stringify(userInfo));
+    window.dispatchEvent(new Event('storage'));
+  } catch (error) {
+    console.error('Error setting user info:', error);
+  }
 };
 
 // 获取用户信息
 export const getUserInfo = () => {
-  const userInfo = Cookies.get(USER_INFO_KEY);
-  return userInfo ? JSON.parse(userInfo) : null;
+  try {
+    const userInfo = localStorage.getItem('earnings_tracker_user');
+    return userInfo ? JSON.parse(userInfo) : DEFAULT_USER_INFO;  // 如果没有用户信息，返回默认值
+  } catch (error) {
+    console.error('Error getting user info:', error);
+    return DEFAULT_USER_INFO;  // 出错时也返回默认值
+  }
 }; 

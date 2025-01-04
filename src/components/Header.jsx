@@ -45,7 +45,10 @@ function Header({ onSettingsUpdate }) {
       <Settings 
         isOpen={showSettings}
         onClose={() => setShowSettings(false)}
-        onUpdate={onSettingsUpdate}
+        onUpdate={() => {
+          onSettingsUpdate();
+          setShowSettings(false);
+        }}
       />
     </>
   );
