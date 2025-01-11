@@ -33,9 +33,9 @@ function Dashboard() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-6">
+    <main className="container mx-auto px-4 py-8 max-w-6xl">
+      <article className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <section className="space-y-6">
           <div className="bg-white rounded-lg p-6 shadow-md">
             <h1 className="text-2xl font-bold mb-4 flex items-center">
               <span>{t('app_name')}</span>
@@ -43,10 +43,13 @@ function Dashboard() {
                 摸鱼中...
               </span>
             </h1>
-            <p className="text-xl mb-4">{currentTime.toLocaleString()}</p>
+            <time className="text-xl mb-4 block" dateTime={currentTime.toISOString()}>
+              {currentTime.toLocaleString()}
+            </time>
             <div className="space-y-2">
               <p className="text-gray-600">
-                {t('dashboard.join_date')}: {userInfo.joinDate}
+                <span>{t('dashboard.join_date')}:</span>
+                <time dateTime={userInfo.joinDate}>{userInfo.joinDate}</time>
               </p>
               <div className="flex items-center text-gray-600">
                 <span className="mr-2">{t('dashboard.monthly_salary')}:</span>
@@ -60,9 +63,9 @@ function Dashboard() {
           </div>
 
           <NextShiftTimer userInfo={userInfo} />
-        </div>
+        </section>
 
-        <div className="space-y-6">
+        <section className="space-y-6">
           <div className="bg-white rounded-lg p-6 shadow-md">
             <h3 className="text-lg font-medium text-gray-600 mb-4">
               {t('dashboard.today_earnings')}
@@ -97,9 +100,9 @@ function Dashboard() {
           </div>
 
           <ShareButton />
-        </div>
-      </div>
-    </div>
+        </section>
+      </article>
+    </main>
   );
 }
 

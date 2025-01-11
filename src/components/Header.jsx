@@ -10,6 +10,7 @@ function Header({ onSettingsUpdate }) {
   const toggleLanguage = () => {
     const newLang = i18n.language === 'en' ? 'zh' : 'en';
     i18n.changeLanguage(newLang);
+    localStorage.setItem('preferred_language', newLang);
   };
 
   return (
@@ -35,6 +36,7 @@ function Header({ onSettingsUpdate }) {
             <button
               onClick={toggleLanguage}
               className="px-4 py-2 rounded-lg bg-white shadow hover:bg-gray-100 transition-colors"
+              title={i18n.language === 'en' ? '切换到中文' : 'Switch to English'}
             >
               {i18n.language === 'en' ? '中文' : 'English'}
             </button>

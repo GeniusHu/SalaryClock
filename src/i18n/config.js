@@ -1,5 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { getUserLocation, getPreferredLanguage } from '../utils/locationUtils';
 
 // 语言包配置
 // en: 英文(默认)
@@ -109,15 +110,39 @@ const resources = {
   }
 };
 
-// i18n初始化配置
-i18n
-  .use(initReactI18next)
-  .init({
-    resources,
-    lng: "en", // 默认语言
-    interpolation: {
-      escapeValue: false
-    }
-  });
+// 初始化函数
+const initI18n = async () => {
+  try {
+    const countryCode = await getUserLocation();
+    const defaultLanguage = getPreferredLanguage(countryCode);
+
+    i18n
+      .use(initReactI18next)
+      .init({
+        resources,
+        lng: defaultLanguage,
+        fallbackLng: 'en',
+        interpolation: {
+          escapeValue: false
+        }
+      });
+  } catch (error) {
+    console.error('Error initializing i18n:', error);
+    // 出错时使用默认配置
+    i18n
+      .use(initReactI18next)
+      .init({
+        resources,
+        lng: 'en',
+        fallbackLng: 'en',
+        interpolation: {
+          escapeValue: false
+        }
+      });
+  }
+};
+
+// 执行初始化
+initI18n();
 
 export default i18n; 
