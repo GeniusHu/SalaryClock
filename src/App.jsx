@@ -1,9 +1,21 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { useEffect, useState } from 'react';
 import Header from './components/Header';
 import Dashboard from './pages/Dashboard';
 import About from './pages/About';
-import { useState } from 'react';
+import { trackPageView } from './utils/analytics';
+
+// 路由变化跟踪组件
+function RouteTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    trackPageView(location.pathname);
+  }, [location]);
+
+  return null;
+}
 
 function App() {
   const [shouldUpdate, setShouldUpdate] = useState(0);
@@ -15,6 +27,7 @@ function App() {
   return (
     <HelmetProvider>
       <Router>
+        <RouteTracker />
         <div className="min-h-screen bg-primary text-gray-800">
           <Header onSettingsUpdate={handleSettingsUpdate} />
           <Routes>

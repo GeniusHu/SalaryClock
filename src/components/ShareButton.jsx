@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getUserInfo } from '../utils/cookieUtils';
 import { isWorkingDay, getWorkdaysInMonth } from '../utils/holidayUtils';
+import { trackEvent } from '../utils/analytics';
 
 function ShareButton() {
   const { t, i18n } = useTranslation();
@@ -104,13 +105,16 @@ function ShareButton() {
           text: generateShareContent(),
           url: window.location.origin
         });
+        trackEvent('Share', 'success', 'web_share_api');
       } catch (err) {
         if (err.name !== 'AbortError') {
           console.error('分享失败:', err);
+          trackEvent('Share', 'error', err.message);
         }
       }
     } else {
       copyToClipboard();
+      trackEvent('Share', 'success', 'clipboard_copy');
     }
   };
 

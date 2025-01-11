@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { setUserInfo, getUserInfo } from '../utils/cookieUtils';
+import { trackEvent } from '../utils/analytics';
 
 function Settings({ isOpen, onClose, onUpdate }) {
   const { t } = useTranslation();
@@ -38,6 +39,9 @@ function Settings({ isOpen, onClose, onUpdate }) {
       ...userInfo,
       ...formData
     });
+    
+    trackEvent('Settings', 'update', 'user_settings_updated');
+    
     onUpdate();
     onClose();
   };
