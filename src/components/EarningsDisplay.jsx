@@ -11,6 +11,7 @@ function EarningsDisplay({ userInfo }) {
     year: '0.00',
   });
 
+
   // 核心计算逻辑
   const calculateEarnings = useCallback(() => {
     try {
