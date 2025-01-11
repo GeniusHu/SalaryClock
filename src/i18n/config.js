@@ -110,39 +110,31 @@ const resources = {
   }
 };
 
-// 初始化函数
-const initI18n = async () => {
-  try {
-    const countryCode = await getUserLocation();
-    const defaultLanguage = getPreferredLanguage(countryCode);
+// 首先同步初始化 i18n，使用默认语言
+i18n.use(initReactI18next).init({
+  resources,
+  lng: localStorage.getItem('preferred_language') || 'en', // 优先使用存储的语言偏好
+  fallbackLng: 'en',
+  interpolation: {
+    escapeValue: false
+  }
+});
 
-    i18n
-      .use(initReactI18next)
-      .init({
-        resources,
-        lng: defaultLanguage,
-        fallbackLng: 'en',
-        interpolation: {
-          escapeValue: false
-        }
-      });
+// 然后异步获取位置并更新语言
+const initLanguage = async () => {
+  try {
+    // 如果已经有语言偏好，就不再请求位置
+    if (!localStorage.getItem('preferred_language')) {
+      const countryCode = await getUserLocation();
+      const defaultLanguage = getPreferredLanguage(countryCode);
+      await i18n.changeLanguage(defaultLanguage);
+      localStorage.setItem('preferred_language', defaultLanguage);
+    }
   } catch (error) {
-    console.error('Error initializing i18n:', error);
-    // 出错时使用默认配置
-    i18n
-      .use(initReactI18next)
-      .init({
-        resources,
-        lng: 'en',
-        fallbackLng: 'en',
-        interpolation: {
-          escapeValue: false
-        }
-      });
+    console.error('Error initializing language:', error);
   }
 };
 
-// 执行初始化
-initI18n();
+initLanguage();
 
 export default i18n; 

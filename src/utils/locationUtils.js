@@ -1,9 +1,21 @@
 // 使用 ipapi.co 的免费 API 获取用户位置
 export const getUserLocation = async () => {
   try {
-    const response = await fetch('https://ipapi.co/json/');
+    // 添加超时处理
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5秒超时
+
+    const response = await fetch('https://ipapi.co/json/', {
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error('Location API failed');
+    }
+
     const data = await response.json();
-    return data.country_code; // 返回国家代码，如 'CN' 或 'US'
+    return data.country_code;
   } catch (error) {
     console.error('Error fetching location:', error);
     return 'US'; // 默认返回美国
@@ -12,7 +24,6 @@ export const getUserLocation = async () => {
 
 // 根据国家代码确定语言
 export const getPreferredLanguage = (countryCode) => {
-  // 中文地区列表
   const chineseRegions = ['CN', 'HK', 'TW', 'MO'];
   return chineseRegions.includes(countryCode) ? 'zh' : 'en';
 }; 
