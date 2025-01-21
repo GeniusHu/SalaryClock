@@ -2,8 +2,10 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { HelmetProvider } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import Dashboard from './pages/Dashboard';
 import About from './pages/About';
+import Privacy from './pages/Privacy';
 import { trackPageView } from './utils/analytics';
 
 // 路由变化跟踪组件
@@ -32,8 +34,10 @@ function App() {
           <Header onSettingsUpdate={handleSettingsUpdate} />
           <Routes>
             <Route path="/about" element={<About />} />
+            <Route path="/privacy" element={<Privacy />} />
             <Route path="/" element={<Dashboard key={shouldUpdate} />} />
           </Routes>
+          <Footer />
         </div>
       </Router>
     </HelmetProvider>

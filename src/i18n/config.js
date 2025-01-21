@@ -54,12 +54,37 @@ const resources = {
         "join_date": "Join Date",
         "save": "Save",
         "cancel": "Cancel"
+      },
+      "privacy": {
+        "title": "Privacy Policy",
+        "meta_description": "Privacy Policy for Earnings Tracker - Learn how we protect your data",
+        "data_collection": {
+          "title": "Data Collection",
+          "content": "We collect minimal personal information necessary for the app's functionality. This includes your work schedule and salary information, which is stored locally on your device."
+        },
+        "data_usage": {
+          "title": "How We Use Your Data",
+          "content": "Your data is used solely for calculating your earnings and providing personalized work time tracking. We do not share your information with third parties."
+        },
+        "data_protection": {
+          "title": "Data Protection",
+          "content": "Your data is stored locally on your device and is not transmitted to our servers. We implement industry-standard security measures to protect your information."
+        },
+        "user_rights": {
+          "title": "Your Rights",
+          "content": "You have full control over your data. You can view, modify, or delete your information at any time through the app settings."
+        },
+        "contact": {
+          "title": "Contact Us",
+          "content": "If you have any questions about our privacy policy or data practices, please contact us at support@paytimer24.com"
+        },
+        "last_updated": "Last Updated"
       }
     }
   },
   zh: {
     translation: {
-      "app_name": "薪时计",
+      "app_name": "牛马时钟",
       "dashboard": {
         "title": "仪表盘",
         "current_time": "当前时间",
@@ -137,4 +162,4 @@ const initLanguage = async () => {
 
 initLanguage();
 
-export default i18n; 
+export default i18n;
